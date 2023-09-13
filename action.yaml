@@ -1,0 +1,58 @@
+name: 'Setup Common Lisp'
+description: >-
+  Setup Common Lisp on a GitHub Runner.
+branding:
+  icon: box
+  color: blue
+inputs:
+  implementation:
+    description: |
+      The Common Lisp implementation to setup. This can be one of the
+      following values:
+
+        abcl clisp ecl sbcl
+
+      in the future we would like to support all of
+
+        abcl clasp ecl gcl sbcl
+      
+    default: 'sbcl'
+outputs:
+  lisp-implementation-type:
+    value: ${{ steps.setup-lisp.outputs.lisp-implementation-type }}
+    description: >-
+      The implementation type for Common Lisp.
+  lisp-implementation-version:
+    value: ${{ steps.setup-lisp.outputs.lisp-implementation-version }}
+    description: >-
+      The implementation version for Common Lisp.
+  lisp-implementation-init-filename:
+    value: ${{ steps.setup-lisp.outputs.lisp-implementation-init-filename }}
+    description: >-
+      The user initialisation file associated to the GitHub runner
+      user for the selected implementation.
+
+runs:
+  using: 'composite'
+  steps:
+    - name: 'Update APT package lists'
+      if: runner.os == 'Linux'
+      shell: sh
+      run: >-
+        sudo apt update
+    - name: 'Install Common Lisp'
+      if: runner.os == 'Linux'
+      shell: sh
+      run: >-
+        sudo apt install ${{ inputs.implementation }} cl-asdf
+    - name: 'Install Common Lisp'
+      if: runner.os == 'macOS'
+      shell: sh
+      run: >-
+        sudo port install ${{ inputs.implementation }}
+    - name: 'Describe Common Lisp'
+      id: describe-lisp
+      shell: sh
+      run: >-
+        ${{ github.action_path }}/with_lisp_implementation ${{ inputs.implementation }}
+        ${{ github.action_path }}/describe-lisp.lisp

@@ -1,0 +1,65 @@
+#!/bin/sh
+
+# with_lisp_implementation — Load Lisp Scripts with the given implementation
+
+# Melusina Actions (https://github.com/melusina-org/setup-common-lisp)
+# This file is part of Melusina Actions.
+#
+# Copyright © 2023 Michaël Le Barbier
+# All rights reserved.
+
+# This file must be used under the terms of the MIT License.
+# This source file is licensed as described in the file LICENSE, which
+# you should have received as part of this distribution. The terms
+# are also available at https://opensource.org/licenses/MIT
+
+: ${lisp_implementation:='sbcl'}
+
+lisp_load_file()
+(
+    local argv script
+
+    if [ $# -eq 0 ]; then
+	script=$(mktemp)
+	trap "rm -f ${script}" EXIT TERM INT
+	cat > "${script}"
+	set -- "${script}"
+    fi
+    
+    case "${lisp_implementation}" in
+	abcl|ecl|sbcl)
+	    exec "${lisp_implementation}" --load "$1" --eval '(quit)'
+	    ;;
+	clisp)
+	    ubuntu_asdf="/usr/share/common-lisp/source/cl-asdf/asdf.lisp"
+	    if [ -f "${ubuntu_asdf}" ]; then
+		exec clisp "${ubuntu_asdf}" "$1"
+	    else
+		exec clisp "$1"
+	    fi
+	    ;;
+	*)
+	    set -x
+	    "${lisp_implementation}" -h
+	    "${lisp_implementation}" --help
+	    exit 1
+	    ;;
+    esac
+)
+
+lisp_main()
+{
+    case "$1" in
+        abcl|clasp|clisp|ecl|gcl|sbcl)
+	    lisp_implementation="$1"
+	    shift
+	    ;;
+        *)
+            exit 70
+    esac
+    lisp_load_file "$@"
+}
+
+lisp_main "$@"
+
+# End of file `with_lisp_implementation'
