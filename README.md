@@ -3,6 +3,8 @@
 This GitHub Action installs Common Lisp implementations on GitHub
 Runners.
 
+[![Continuous Integration](https://github.com/melusina-org/setup-common-lisp/actions/workflows/continuous-integration.yaml/badge.svg)](https://github.com/melusina-org/setup-common-lisp/actions/workflows/continuous-integration.yaml)
+
 This action is complemented by other actions related to the Common
 Lisp eco system:
 
@@ -17,7 +19,6 @@ Lisp eco system:
 Create a workflow file in the`.github/workflows` directory of your
 working copy.  This workflow file should use a MacOS runner or a
 Ubuntu Runner and use the branch `v1` of this action.
-
 
 An [example workflow](#example-workflow) is available below. See the GitHub Help Documentation for
 [Creating a workflow file](https://help.github.com/en/articles/configuring-a-workflow#creating-a-workflow-file)
