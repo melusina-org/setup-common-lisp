@@ -10,11 +10,11 @@ inputs:
       The Common Lisp implementation to setup. This can be one of the
       following values:
 
-        abcl clisp ecl sbcl
+        abcl ecl sbcl
 
       in the future we would like to support all of
 
-        abcl clasp ecl gcl sbcl
+        abcl clasp clisp ecl gcl sbcl
       
     default: 'sbcl'
 outputs:

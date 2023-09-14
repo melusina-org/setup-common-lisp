@@ -7,7 +7,7 @@ jobs:
   install-common-lisp-on-tier-1-platforms:
     strategy:
       matrix:
-        implementation: ['abcl', 'clisp', 'ecl', 'sbcl']
+        implementation: ['abcl', 'ecl', 'sbcl']
         os: ['ubuntu-latest', 'macos-11', 'macos-12', 'macos-13']
     runs-on: '${{ matrix.os }}'
     name: 'Install Common Lisp'
@@ -28,7 +28,7 @@ jobs:
     needs: install-common-lisp-on-tier-1-platforms
     strategy:
       matrix:
-        implementation: ['gcl']
+        implementation: ['clisp', 'gcl']
         os: ['ubuntu-latest', 'macos-11', 'macos-12', 'macos-13']
     runs-on: '${{ matrix.os }}'
     name: 'Install Common Lisp'

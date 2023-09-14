@@ -32,8 +32,8 @@ Lisp implementation is installed on the runner and can be used.
 ## Inputs
 
 * `implementation` — The Common Lisp implementation to setup. This can
-  be one of the values `abcl clisp ecl sbcl` and
-  in the future we would like to support all of `abcl clasp ecl gcl sbcl`
+  be one of the values `abcl ecl sbcl` and
+  in the future we would like to support all of `abcl clasp clisp ecl gcl sbcl`
   and maybe other implementations. Please open an issue to express
   interest for other implementations.
 
