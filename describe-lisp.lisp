@@ -41,6 +41,16 @@
    (cdr (assoc (lisp-implementation-type) *init-filename* :test #'string-equal))
    (user-homedir-pathname)))
 
+(defun normalized-lisp-implementation-type ()
+  (let ((exceptions
+	  '(("armed bear common lisp" . "abcl"))))
+    (flet ((exceptions (implementation-type)
+	     (or
+	      (cdr (assoc implementation-type exceptions :test #'string=))
+	      implementation-type)))
+      (exceptions
+       (string-downcase (lisp-implementation-type))))))
+
 (defun write-detail (&key name key value)
   "Write detail NAME with VALUE.
 Additionally, when running on GitHub Actions, the key is written
@@ -57,7 +67,7 @@ to job output."
   (write-detail
    :name "Lisp Implementation Type"
    :key "lisp-implementation-type"
-   :value (lisp-implementation-type))
+   :value (normalized-lisp-implementation-type))
   (write-detail
    :name "Lisp Implementation Version"
    :key "lisp-implementation-version"
