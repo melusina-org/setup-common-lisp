@@ -19,15 +19,15 @@ inputs:
     default: 'sbcl'
 outputs:
   lisp-implementation-type:
-    value: ${{ steps.setup-lisp.outputs.lisp-implementation-type }}
+    value: ${{ steps.describe-lisp.outputs.lisp-implementation-type }}
     description: >-
       The implementation type for Common Lisp.
   lisp-implementation-version:
-    value: ${{ steps.setup-lisp.outputs.lisp-implementation-version }}
+    value: ${{ steps.describe-lisp.outputs.lisp-implementation-version }}
     description: >-
       The implementation version for Common Lisp.
   lisp-implementation-init-filename:
-    value: ${{ steps.setup-lisp.outputs.lisp-implementation-init-filename }}
+    value: ${{ steps.describe-lisp.outputs.lisp-implementation-init-filename }}
     description: >-
       The user initialisation file associated to the GitHub runner
       user for the selected implementation.

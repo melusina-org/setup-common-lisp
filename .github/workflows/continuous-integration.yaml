@@ -1,0 +1,48 @@
+name: 'Continuous Integration'
+on:
+  - workflow_dispatch
+  - push
+
+jobs:
+  install-common-lisp-on-tier-1-platforms:
+    strategy:
+      matrix:
+        implementation: ['abcl', 'clisp', 'ecl', 'sbcl']
+        os: ['ubuntu-latest', 'macos-11', 'macos-12', 'macos-13']
+    runs-on: '${{ matrix.os }}'
+    name: 'Install Common Lisp'
+    steps:
+      - uses: actions/checkout@v3
+      - name: 'Install MacPorts'
+        if: runner.os == 'macOS'
+        uses: melusina-org/setup-macports@v1
+      - uses: ./
+        id: common-lisp
+        with:
+          implementation: '${{ matrix.implementation }}'
+      - name: 'Validate installed implementation'
+        run: >-
+          test '${{ steps.common-lisp.outputs.lisp-implementation-type }}' = '${{ matrix.implementation }}'
+
+  install-common-lisp-on-tier-2-platforms:
+    needs: install-common-lisp-on-tier-1-platforms
+    strategy:
+      matrix:
+        implementation: ['gcl']
+        os: ['ubuntu-latest', 'macos-11', 'macos-12', 'macos-13']
+    runs-on: '${{ matrix.os }}'
+    name: 'Install Common Lisp'
+    steps:
+      - uses: actions/checkout@v3
+      - name: 'Install MacPorts'
+        if: runner.os == 'macOS'
+        uses: melusina-org/setup-macports@v1
+      - uses: ./
+        continue-on-error: true
+        id: common-lisp
+        with:
+          implementation: '${{ matrix.implementation }}'
+      - name: 'Validate installed implementation'
+        continue-on-error: true
+        run: >-
+          test "${{ steps.common-lisp.outputs.lisp-implementation-type }}" = '${{ matrix.implementation }}'
