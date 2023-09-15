@@ -15,7 +15,8 @@
 (require '#:uiop)
 
 (defpackage #:org.melusina.lisp-action/describe-lisp
-  (:use #:common-lisp))
+  (:use #:common-lisp)
+  (:export #:entrypoint))
 
 (in-package #:org.melusina.lisp-action/describe-lisp)
 
@@ -36,11 +37,6 @@
     (cmucl . ".cmucl-init.lisp")
     (scl . ".scl-init.lisp")))
 
-(defun init-filename ()
-  (merge-pathnames
-   (cdr (assoc (lisp-implementation-type) *init-filename* :test #'string-equal))
-   (user-homedir-pathname)))
-
 (defun normalized-lisp-implementation-type ()
   (let ((exceptions
 	  '(("armed bear common lisp" . "abcl"))))
@@ -50,6 +46,19 @@
 	      implementation-type)))
       (exceptions
        (string-downcase (lisp-implementation-type))))))
+
+(defun init-filename ()
+  (let ((init-filename
+	  (cdr
+	   (assoc (normalized-lisp-implementation-type) *init-filename*
+		  :test #'string-equal))))
+    (unless init-filename
+      (error "Cannot determine the INIT-FILENAME for ~
+              implementation type ~A."
+	     (normalized-lisp-implementation-type)))
+    (merge-pathnames
+     init-filename
+     (user-homedir-pathname))))
 
 (defun write-detail (&key name key value)
   "Write detail NAME with VALUE.
@@ -77,7 +86,12 @@ to job output."
    :key "lisp-implementation-init-filename"
    :value (init-filename)))
 
-(progn (write-implementation-details))
+(defun entrypoint ()
+  (handler-case (write-implementation-details)
+    (error (c)
+      (format *trace-output* "~&Failure: ~A~&" c)
+      (uiop:quit 1))))
+
+(progn (entrypoint))
 
 ;;;; End of file `describe-lisp.lisp'
-
