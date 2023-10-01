@@ -38,6 +38,7 @@ Lisp implementation is installed on the runner and can be used.
   and maybe other implementations. Please open an issue to express
   interest for other implementations.
 
+  On Windows Runners, only `sbcl` is supported.
 
 ## Outputs
 

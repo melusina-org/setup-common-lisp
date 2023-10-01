@@ -9,6 +9,9 @@ jobs:
       matrix:
         implementation: ['abcl', 'ecl', 'sbcl']
         os: ['ubuntu-latest', 'macos-latest']
+        include:
+          - implementation: 'sbcl'
+            os: 'windows-latest'
     runs-on: '${{ matrix.os }}'
     name: 'Install Common Lisp'
     steps:

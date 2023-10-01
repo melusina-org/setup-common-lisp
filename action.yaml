@@ -50,9 +50,14 @@ runs:
       shell: sh
       run: >-
         sudo port install ${{ inputs.implementation }}
+    - name: 'Install Common Lisp'
+      if: runner.os == 'Windows'
+      shell: sh
+      run: >-
+        choco install ${{ inputs.implementation }}
     - name: 'Describe Common Lisp'
       id: describe-lisp
       shell: sh
       run: >-
-        ${{ github.action_path }}/with_lisp_implementation ${{ inputs.implementation }}
-        ${{ github.action_path }}/describe-lisp.lisp
+        ${GITHUB_ACTION_PATH}/with_lisp_implementation ${{ inputs.implementation }}
+        ${GITHUB_ACTION_PATH}/describe-lisp.lisp
