@@ -37,6 +37,9 @@ jobs:
       matrix:
         implementation: ['clisp', 'gcl']
         os: ['ubuntu-latest', 'macos-latest']
+        include:
+          - implementation: 'clisp'
+            os: 'windows-latest'
     runs-on: '${{ matrix.os }}'
     name: 'Install Common Lisp'
     steps:

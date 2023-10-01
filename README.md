@@ -17,8 +17,7 @@ Lisp eco system:
 ## Usage
 
 Create a workflow file in the`.github/workflows` directory of your
-working copy.  This workflow file should use a MacOS runner or a
-Ubuntu Runner and use the branch `v1` of this action.
+working copy.  This workflow file should use the branch `v1` of this action.
 
 An [example workflow](#example-workflow) is available below. See the GitHub Help Documentation for
 [Creating a workflow file](https://help.github.com/en/articles/configuring-a-workflow#creating-a-workflow-file)
@@ -36,9 +35,8 @@ Lisp implementation is installed on the runner and can be used.
   be one of the values `abcl ecl sbcl` and
   in the future we would like to support all of `abcl clasp clisp ecl gcl sbcl`
   and maybe other implementations. Please open an issue to express
-  interest for other implementations.
-
-  On Windows Runners, only `sbcl` is supported.
+  interest for other implementations.  On Windows Runners, only the implementation
+  `sbcl` is supported and `clisp` is in the experimental list.
 
 ## Outputs
 
